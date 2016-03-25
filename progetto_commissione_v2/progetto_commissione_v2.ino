@@ -3,18 +3,24 @@ Servo servo1;
 #include <math.h>
 #define echoPin 7 
 #define trigPin 8 
-
-
+#define pinbott 6
+#define led 2
+#define pinpot A0
 long tempo; 
 int altezza = 10; //cambiare con il valore della distanza tra i laser 
 int distanza;
 double angolo1;
 int angoloServo;
+int angMan;
+int bottone = 0;
 
 
 void setup() {
  pinMode(trigPin, OUTPUT); //inizializzazione pin per sensore
  pinMode(echoPin, INPUT);
+ pinMode(pinbott, INPUT);
+ pinMode(pinpot, INPUT);
+ pinMode(led, OUTPUT);
  servo1.attach(4);
  Serial.begin (9600);
 
@@ -47,6 +53,16 @@ void loop() {
    Serial.print("Angolo: ");
    Serial.println(0);
    delay(15);}
+ delay(1000);
+ digitalWrite(led, HIGH);
+ Serial.println("pronto");
+   if (digitalRead(6)==0){
+   Serial.println("automatico");}
+   else {delay(3000); while(digitalRead(6) == 0){ Serial.println("manuale");
+   angMan = analogRead(pinpot);
+   angMan = map(angMan, 0, 1023, 0, 180);
+   servo1.write(angMan);
+   delay(1000);}}
+   
+   
 }
- 
- 
